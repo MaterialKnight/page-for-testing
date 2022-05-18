@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <p id="demo1"></p>
+      <p id="demo2"></p>
+      <script>
+'use strict'
+
+const demo1 = document.getElementById("demo1")
+const demo2 = document.getElementById("demo2")
+
+const e0_obj = {'name' : 'obj_0', boolFun : function() {return true}, oName: ()=>{return this.name}}
+function e1_fun(){return 'Mabuhay :D'}
+const e2_obj = {
+   aFunc : function(){
+      return 'This Works!'
+   },
+   innerObj : {
+      larryLQuote : 'La recursividad es lo máximo!',
+      deepFunc : function() {return this.larryLQuote}
+   }
+}
+const e3_fun = function() {return this.name}
+const e4_obj = {dumname: 'Mark', exterFun: e3_fun}
+{
+// const letters = ['b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z']
+// const splitLetters = letters.toString().split(',')
+// console.log(splitLetters)
+// const superAr = ['a']
+//
+// function treeCreator(entelechy) {
+//    let limit = entelechy.length
+//    let height = 0
+//    let tree = []
+//
+//    function growth(currBranch) {
+//       if (height === limit) {
+//          return tree
+//       } else {
+//          switch (currBranch.length) {
+//             case 0 :
+//                currBranch.push(entelechy[height])
+//                currBranch.push([entelechy[height + 1], [entelechy[height + 2]]])
+//                entelechy += 2
+//                growth()
+//          }
+//       }
+//    }
+//
+//    function sun&Water(seed, entelechy) {
+//       if (growth%3 === 0) seed.push([])
+//       while (growth)
+//       if (growth < limit) {
+//          seed.push(entelchy[growth])
+//       }
+//
+//
+//    }
+// }
+
+}
+
+function getKeys(obj) {
+   return Object.keys(obj).filter(key => typeof obj[key] === 'object')
+}
+
+function keyCollector4(obj) {
+   const objKeys = getKeys(obj)
+   let tree
+
+   if (objKeys.length > 0) {
+
+      tree = objKeys.map(key => {
+
+         if (getKeys(obj[key]).length === 0) {
+            return [key]
+         } else {
+            return [key, keyCollector4(obj[key])]
+         }
+      })
+   }
+   return tree
+}
+
+
+
+
+
+function keyCollector(obj, acc) {
+   const objKeys = Object.keys(obj).filter(key => typeof obj[key] === 'object')
+   if (objKeys.length > 0) {
+      objKeys.forEach((key) => {
+         acc.push(obj[key])
+         keyCollector(obj[key], acc)
+      });
+   }
+}
+
+
+
+const a = {
+   b: {
+      d: {
+         f: {
+            goal1: 'end1'
+         },
+         g: {
+            goal2: 'end2'
+         }
+      },
+      e: {
+         goal3: 'end3'
+      }
+   },
+   c: {
+      h: {
+         goal: 'end4'
+      }
+   }
+}
+
+console.log('keyCollector4()')
+
+console.log(keyCollector4(a))
+const e = []
+console.log(keyCollector(a, e))
+console.log(e)
+
+
+const firstTree = Object.keys(a).filter(key => typeof a[key] === 'object')
+console.log(firstTree)
+
+let i = 0
+
+
+
+
+
+
+// Put what you want to console-log in  this array:
+
+const logArray = ["I'm a string! :D", 0, (()=>1)(),e0_obj, e1_fun, e2_obj, 42, e3_fun, e4_obj]
+
+console.log(e2_obj.innerObj.deepFunc())
+
+// const kromObjekt = {kromNom: 'protNom', kromFun: function() {return this.kromNom}}
+// const funEntries = Object.entries(kromObjekt).filter(entry => typeof entry[1] === 'function')
+// const copiObjekt = JSON.parse(JSON.stringify(kromObjekt))
+// funEntries.forEach(entry => {
+//    const [key, value] = entry
+//    copiObjekt[key] = value.toString()
+// })
+
+const ob1 = {ob2: {ob3: {name: 'hiddenObj', hiddenFun: function () {return this.name}}}}
+
+console.log(ob1.ob2.ob3.hiddenFun())
+
+let chain = []
+
+
+function chainObjects(obj) {
+   chain.push(obj)
+   let objEntries = Object.entries(obj).filter(entry => typeof entry[1] === 'object')
+   objEntries.forEach(entry => {
+      const [key] = entry
+   })
+}
+
+
+//console.log(copiObjekt.kromNom)
+
+
+
+function consoleLogAll(logArray) {
+
+   let prevObj = null
+
+   function logFunction(item) {
+
+      try {
+         if (prevObj === null) {
+            const rVal = item()
+            console.log(`${item} FROM THE ORIGINAL INPUT ARRAY`)
+            console.log(rVal)
+         } else {
+            const rVal = item.call(prevObj)
+            console.log(`${item}:\n${rVal}`)
+         }
+
+         switch (typeof rVal) {
+            case 'function' : logFunction(rVal)
+               break
+            case 'object' : logObject(rVal)
+         }
+      } catch(err) {
+         console.log(err)
+      }
+
+   }
+
+   function logObject(item) {
+
+      console.log(item.key)
+
+      prevObj = item
+
+      const functionEntries = Object.entries(item).filter(entry => typeof entry[1] === 'function')
+      const deepCopy = JSON.parse(JSON.stringify(item))
+
+      functionEntries.forEach(entry => {
+         const [key, value] = entry
+         deepCopy[key] = value.toString()
+      })
+
+      console.log(JSON.parse(JSON.stringify(deepCopy)))
+
+      for (const i in item) {
+         switch (typeof item[i]) {
+            case 'function' : logFunction(item[i])
+               break
+            case 'object' : logObject(item[i])
+         }
+      }
+   }
+
+   logArray.forEach(elem => {
+
+      prevObj = null
+      let chain = elem
+
+      switch (typeof elem) {
+         case 'function' :
+            logFunction(elem)
+            break
+         case 'object' :
+            logObject(elem)
+            break
+         default : console.log(elem)
+      }
+   })
+}
+
+consoleLogAll(logArray)
+
+
+      </script>
+   </body>
+</html>
